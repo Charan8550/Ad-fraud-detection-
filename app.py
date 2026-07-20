@@ -1,50 +1,103 @@
 from flask import Flask, render_template, flash, redirect, request, send_from_directory, url_for, send_file, jsonify, session
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.pyplot as plt
 import seaborn as sn
 from keras.preprocessing.image import img_to_array, load_img
-from flask import Flask, render_template, session, flash, redirect, request, send_from_directory, url_for
 import mysql.connector, os
 import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
 import time
 import re
 from urllib.parse import urlparse
 import pymysql as mysql
 
+from fastapi import FastAPI
+from fastapi.middleware.wsgi import WSGIMiddleware
+import gradio as gr
+import spaces
+
+@spaces.GPU
+def dummy_gpu_func():
+    pass
+
+import sqlite3
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
-# ...existing code...
-mydb = mysql.connect(
-    host='localhost',
-    user='root',
-    password='381920@Mysql',
-    port=3306,
-    database='Adds',
-    charset='utf8mb4'
-)
-# Use dictionary=True if you want dict rows: mydb.cursor(dictionary=True)
-mycursor = mydb.cursor()
-# ...existing code...
+USE_SQLITE = False
+try:
+    mydb = mysql.connect(
+        host='localhost',
+        user='root',
+        password='381920@Mysql',
+        port=3306,
+        database='Adds',
+        charset='utf8mb4'
+    )
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT 1")
+    mycursor.fetchall()
+    print("Successfully connected to MySQL database!")
+except Exception as e:
+    print(f"Could not connect to MySQL database: {e}. Falling back to SQLite adds.db")
+    USE_SQLITE = True
 
-def executionquery(query,values):
-    mycursor.execute(query,values)
-    mydb.commit()
-    return
+def init_sqlite_db():
+    conn = sqlite3.connect('adds.db')
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT,
+            email TEXT,
+            password TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
 
-def retrivequery1(query,values):
-    mycursor.execute(query,values)
-    data = mycursor.fetchall()
-    return data
+if USE_SQLITE:
+    init_sqlite_db()
+
+def executionquery(query, values):
+    if USE_SQLITE:
+        query = query.replace('%s', '?')
+        conn = sqlite3.connect('adds.db')
+        cursor = conn.cursor()
+        cursor.execute(query, values)
+        conn.commit()
+        conn.close()
+    else:
+        mycursor.execute(query, values)
+        mydb.commit()
+
+def retrivequery1(query, values):
+    if USE_SQLITE:
+        query = query.replace('%s', '?')
+        conn = sqlite3.connect('adds.db')
+        cursor = conn.cursor()
+        cursor.execute(query, values)
+        data = cursor.fetchall()
+        conn.close()
+        return data
+    else:
+        mycursor.execute(query, values)
+        data = mycursor.fetchall()
+        return data
 
 def retrivequery2(query):
-    mycursor.execute(query)
-    data = mycursor.fetchall()
-    return data
+    if USE_SQLITE:
+        query = query.replace('%s', '?')
+        conn = sqlite3.connect('adds.db')
+        cursor = conn.cursor()
+        cursor.execute(query)
+        data = cursor.fetchall()
+        conn.close()
+        return data
+    else:
+        mycursor.execute(query)
+        data = mycursor.fetchall()
+        return data
 
 
 @app.route('/url_checker')
@@ -199,10 +252,13 @@ def model():
 import joblib
 from tensorflow.keras.models import load_model
 
-
 # Load the GRU model and scaler
 gru_model = load_model('gru_model.h5')
 scaler = joblib.load('minmax_scaler.pkl')
+
+@spaces.GPU
+def predict_gpu(model, data):
+    return model.predict(data)
 
 @app.route('/prediction', methods=['GET', 'POST'])
 def prediction():
@@ -227,7 +283,7 @@ def prediction():
             scaled_data_reshaped = scaled_data.reshape(1, scaled_data.shape[1], 1)
 
             # Make prediction
-            prediction = (gru_model.predict(scaled_data_reshaped) > 0.5).astype(int)
+            prediction = (predict_gpu(gru_model, scaled_data_reshaped) > 0.5).astype(int)
 
             # Map prediction to result message
             if prediction[0] == 1:
@@ -299,6 +355,7 @@ def login():
             if password == password_data[0][0]:
                 global user_email
                 user_email = email
+                session['user_email'] = email
                 return redirect("/home")
 
             # Invalid password
@@ -308,6 +365,11 @@ def login():
         return render_template('login.html', message="This email ID does not exist!")
     
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_email', None)
+    return redirect('/')
 
 
 
@@ -323,7 +385,29 @@ def login():
 
 
 
+# Save the original create_app function to monkeypatch it
+original_create_app = gr.routes.App.create_app
+
+def custom_create_app(*args, **kwargs):
+    # Call the original create_app to create the FastAPI instance
+    fastapi_app = original_create_app(*args, **kwargs)
+    # Mount our Flask app to this FastAPI instance at /app
+    fastapi_app.mount("/app", WSGIMiddleware(app))
+    return fastapi_app
+
+# Apply the monkeypatch
+gr.routes.App.create_app = custom_create_app
+
+# Create a dummy Gradio app to satisfy the ZeroGPU spaces runner (with iframe rendering the Flask app)
+with gr.Blocks(title="AdClick Fraud Detector") as demo:
+    gr.HTML(
+        """
+        <iframe src="/app/" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>
+        """
+    )
+
 if __name__ == '__main__':
-    app.run(debug = True)
+    port = int(os.environ.get('PORT', 7860))
+    demo.launch(server_name="0.0.0.0", server_port=port)
 
     
