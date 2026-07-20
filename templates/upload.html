@@ -40,52 +40,9 @@
 
         <!-- Navbar & Hero Start -->
         <div class="container-fluid header-top">
-            <div class="nav-shaps-2"></div>
-            <div class="container d-flex align-items-center">
-                <div class="d-flex align-items-center h-100">
-                    <a href="#" class="navbar-brand" style="height: 125px;">
-                        <h1 class="text-primary mb-0"><i class="fas fa-hand-rock me-2"></i> Add Click</h1>
-                    </a>
-                </div>
-                <div class="w-100 h-100">
-                    <div class="topbar px-0 py-2 d-none d-lg-block" style="height: 45px;">
-                        <div class="row gx-0 align-items-center">
-                            <div class="col-lg-8 text-center text-lg-center mb-lg-0">
-                                <div class="d-flex flex-wrap"></div>
-                            </div>
-                            <div class="col-lg-4 text-center text-lg-end">
-                                <div class="d-flex justify-content-end">
-                                    <div class="d-flex align-items-center small">
-                                        <a href="/register" class="login-btn text-body me-3 pe-3"> <span></span></a>
-                                        <a href="/login" class="text-body me-3"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nav-bar px-0 py-lg-0" style="height: 80px;">
-                        <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
-                            <a href="#" class="navbar-brand-2">
-                                <h1 class="text-primary mb-0"><i class="fas fa-hand-rock me-2"></i> Add Click</h1>
-                            </a> 
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                                <span class="fa fa-bars"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarCollapse">
-                                <div class="navbar-nav mx-0 mx-lg-auto">
-                                    <a href="/home" class="nav-item nav-link active">Home</a>
-                                    <a href="/upload" class="nav-item nav-link">Upload</a>
-                                    <a href="/model" class="nav-item nav-link active">Model</a>
-                                    <a href="/prediction" class="nav-item nav-link">Prediction</a>
-                                    <a href="/" class="nav-item nav-link">Logout</a>
-                            
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+            {% include 'navbar.html' %}
         </div>
+        <!-- Navbar & Hero End -->
         <!-- Navbar & Hero End -->
 
         <!-- Modal Search Start -->
@@ -122,16 +79,16 @@
                 <div class="row g-5">
                     <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.2s">
                         <h2 class="text-primary text-center mb-4">Upload Your CSV Dataset</h2>
-                        <div class="card p-4" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 10px;">
+                        <div class="card p-4">
                             <form id="uploadForm" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="csvFile" class="form-label text-dark">Select CSV File</label>
+                                    <label for="csvFile" class="form-label">Select CSV File</label>
                                     <input type="file" class="form-control" id="csvFile" accept=".csv" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary py-2 px-4">Upload</button>
+                                <button type="submit" class="btn btn-primary py-2 px-4 w-100">Upload and Preview</button>
                             </form>
                             <div id="result" class="mt-4" style="max-height: 400px; overflow-y: auto;">
-                                <h4 class="text-dark">Dataset Preview </h4>
+                                <h4>Dataset Preview </h4>
                                 <table class="table table-bordered" id="dataTable">
                                     <thead>
                                         <tr id="tableHeader"></tr>
@@ -152,10 +109,10 @@
             <div class="container">
                 <div class="row g-4 align-items-center">
                     <div class="col-md-6 text-center text-md-start mb-md-0">
-                        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
+                        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>AdShield</a>, All right reserved.</span>
                     </div>
                     <div class="col-md-6 text-center text-md-end text-body">
-                        Designed By <a class="border-bottom text-white" href="#">HTML Codex</a>
+                        Designed By <a class="border-bottom text-white" href="#">AdShield Team</a>
                     </div>
                 </div>
             </div>

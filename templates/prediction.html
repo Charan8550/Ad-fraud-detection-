@@ -37,51 +37,9 @@
 
         <!-- Navbar & Hero Start -->
         <div class="container-fluid header-top">
-            <div class="nav-shaps-2"></div>
-            <div class="container d-flex align-items-center">
-                <div class="d-flex align-items-center h-100">
-                    <a href="#" class="navbar-brand" style="height: 125px;">
-                        <h1 class="text-primary mb-0"><i class="fas fa-hand-rock me-2"></i> Add Click</h1>
-                    </a>
-                </div>
-                <div class="w-100 h-100">
-                    <div class="topbar px-0 py-2 d-none d-lg-block" style="height: 45px;">
-                        <div class="row gx-0 align-items-center">
-                            <div class="col-lg-8 text-center text-lg-center mb-lg-0">
-                                <div class="d-flex flex-wrap"></div>
-                            </div>
-                            <div class="col-lg-4 text-center text-lg-end">
-                                <div class="d-flex justify-content-end">
-                                    <div class="d-flex align-items-center small">
-                                        <a href="/register" class="login-btn text-body me-3 pe-3"> <span></span></a>
-                                        <a href="/login" class="text-body me-3"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nav-bar px-0 py-lg-0" style="height: 80px;">
-                        <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
-                            <a href="#" class="navbar-brand-2">
-                                <h1 class="text-primary mb-0"><i class="fas fa-hand-rock me-2"></i> Add Click</h1>
-                            </a> 
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                                <span class="fa fa-bars"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarCollapse">
-                                <div class="navbar-nav mx-0 mx-lg-auto">
-                                    <a href="/home" class="nav-item nav-link active">Home</a>
-                                    <a href="/upload" class="nav-item nav-link">Upload</a>
-                                    <a href="/model" class="nav-item nav-link active">Model</a>
-                                    <a href="/prediction" class="nav-item nav-link">Prediction</a>
-                                    <a href="/" class="nav-item nav-link">Logout</a>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+            {% include 'navbar.html' %}
         </div>
+        <!-- Navbar & Hero End -->
         <!-- Navbar & Hero End -->
 
         <!-- Modal Search Start -->
@@ -110,13 +68,19 @@
                 <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s"></ol>    
                 <div id="result" class="mt-4">
                     {% if prediction %}
-                        <div class="p-3" style="background-color: white; color: #28a745; font-size: 1.75rem; font-weight: bold; border: 2px solid #28a745; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            {{ prediction }}
-                        </div>
+                        {% if 'Fraudulent' in prediction or 'Fraud' in prediction %}
+                            <div class="alert alert-danger text-center p-3 fs-4 fw-bold">
+                                ⚠️ {{ prediction }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-success text-center p-3 fs-4 fw-bold">
+                                ✓ {{ prediction }}
+                            </div>
+                        {% endif %}
                     {% endif %}
                     {% if error %}
-                        <div class="p-3" style="background-color: white; color: #dc3545; font-size: 1.75rem; font-weight: bold; border: 2px solid #dc3545; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            {{ error }}
+                        <div class="alert alert-warning text-center p-3 fs-4 fw-bold">
+                            ⚠️ {{ error }}
                         </div>
                     {% endif %}
                 </div>
@@ -130,38 +94,38 @@
         <div class="row g-5 justify-content-center">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.2s">
                 <h2 class="text-primary text-center mb-4">Enter Click Data for Fraud Prediction</h2>
-                <div class="card p-4" style="background-color: brown;")  ; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div class="card p-4">
                     <form action="/prediction" method="POST">
                         <div class="mb-3">
-                            <label for="ip" class="form-label" style="color: aqua;">IP Address (numeric)</label>
-                            <input type="number" class="form-control" id="ip" name="ip" required min="0" style="border-color: #007bff;">
+                            <label for="ip" class="form-label">IP Address (numeric)</label>
+                            <input type="number" class="form-control" id="ip" name="ip" required min="0">
                         </div>
                         <div class="mb-3">
-                            <label for="app" class="form-label" style="color: aqua;">App ID</label>
-                            <input type="number" class="form-control" id="app" name="app" required min="0" style="border-color: #007bff;">
+                            <label for="app" class="form-label">App ID</label>
+                            <input type="number" class="form-control" id="app" name="app" required min="0">
                         </div>
                         <div class="mb-3">
-                            <label for="device" class="form-label" style="color: aqua;">Device ID</label>
-                            <input type="number" class="form-control" id="device" name="device" required min="0" style="border-color: #007bff;">
+                            <label for="device" class="form-label">Device ID</label>
+                            <input type="number" class="form-control" id="device" name="device" required min="0">
                         </div>
                         <div class="mb-3">
-                            <label for="os" class="form-label" style="color: aqua;">OS ID</label>
-                            <input type="number" class="form-control" id="os" name="os" required min="0" style="border-color: #007bff;">
+                            <label for="os" class="form-label">OS ID</label>
+                            <input type="number" class="form-control" id="os" name="os" required min="0">
                         </div>
                         <div class="mb-3">
-                            <label for="channel" class="form-label" style="color: aqua;">Channel ID</label>
-                            <input type="number" class="form-control" id="channel" name="channel" required min="0" style="border-color: #007bff;">
+                            <label for="channel" class="form-label">Channel ID</label>
+                            <input type="number" class="form-control" id="channel" name="channel" required min="0">
                         </div>
                         <div class="mb-3">
-                            <label for="hour" class="form-label" style="color: aqua;">Hour (0-23)</label>
-                            <input type="number" class="form-control" id="hour" name="hour" required min="0" max="23" style="border-color: #007bff;">
+                            <label for="hour" class="form-label">Hour (0-23)</label>
+                            <input type="number" class="form-control" id="hour" name="hour" required min="0" max="23">
                         </div>
                         <div class="mb-3">
-                            <label for="minute" class="form-label" style="color:aqua;">Minute (0-59)</label>
-                            <input type="number" class="form-control" id="minute" name="minute" required min="0" max="59" style="border-color: #007bff;">
+                            <label for="minute" class="form-label">Minute (0-59)</label>
+                            <input type="number" class="form-control" id="minute" name="minute" required min="0" max="59">
                         </div>
-                        <center>
-                        <button type="submit" class="btn py-2 px-4" style="background-color: #0056b3; color: white; border-color: #0056b3;">Predict</button>
+                        <center class="mt-4">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Predict Click Status</button>
                         </center>
                     </form>
                 </div>
@@ -176,10 +140,10 @@
             <div class="container">
                 <div class="row g-4 align-items-center">
                     <div class="col-md-6 text-center text-md-start mb-md-0">
-                        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
+                        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>AdShield</a>, All right reserved.</span>
                     </div>
                     <div class="col-md-6 text-center text-md-end text-body">
-                        Designed By <a class="border-bottom text-white" href="#">HTML Codex</a>
+                        Designed By <a class="border-bottom text-white" href="#">AdShield Team</a>
                     </div>
                 </div>
             </div>

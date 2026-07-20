@@ -40,67 +40,9 @@
 
         <!-- Navbar & Hero Start -->
         <div class="container-fluid header-top">
-            <div class="nav-shaps-2"></div>
-            <div class="container d-flex align-items-center">
-                <div class="d-flex align-items-center h-100">
-                    <a href="#" class="navbar-brand" style="height: 125px;">
-                        <h1 class="text-primary mb-0"><i class="fas fa-hand-rock me-2"></i> Add Click</h1>
-                        <!-- <img src="static/img/logo.png" alt="Logo"> -->
-                    </a>
-                </div>
-                <div class="w-100 h-100">
-                    <div class="topbar px-0 py-2 d-none d-lg-block" style="height: 45px;">
-                        <div class="row gx-0 align-items-center">
-                            <div class="col-lg-8 text-center text-lg-center mb-lg-0">
-                                <div class="d-flex flex-wrap">
-                                    <!-- <div class="pe-4">
-                                        <a href="mailto:example@gmail.com" class="text-muted small"><i class="fas fa-envelope text-primary me-2"></i>example@gmail.com</a>
-                                    </div>
-                                    <div class="pe-0">
-                                        <a href="mailto:example@gmail.com" class="text-muted small"><i class="fa fa-clock text-primary me-2"></i>Mon - Sat: 8.00 am-7.00 pm</a>
-                                    </div> -->
-                                </div>
-                            </div>
-                            <div class="col-lg-4 text-center text-lg-end">
-                                <div class="d-flex justify-content-end">
-                                    <div class="d-flex align-items-center small">
-                                        <a href="/register" class="login-btn text-body me-3 pe-3"> <span></span></a>
-                                        <a href="/login" class="text-body me-3"></a>
-                                    </div>
-                                    <!-- <div class="d-flex pe-3">
-                                        <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-facebook-f"></i></a>
-                                        <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-twitter"></i></a>
-                                        <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-instagram"></i></a>
-                                        <a class="btn p-0 text-primary me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
-                                    </div> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nav-bar px-0 py-lg-0" style="height: 80px;">
-                        <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
-                            <a href="#" class="navbar-brand-2">
-                                <h1 class="text-primary mb-0"><i class="fas fa-hand-rock me-2"></i> Add Click</h1>
-                                <!-- <img src="static/img/logo.png" alt="Logo"> -->
-                            </a> 
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                                <span class="fa fa-bars"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarCollapse">
-                                <div class="navbar-nav mx-0 mx-lg-auto">
-                                    <a href="/home" class="nav-item nav-link">Home</a>
-                                    <a href="/upload" class="nav-item nav-link">Upload</a>
-                                    <a href="/model" class="nav-item nav-link">Models</a>
-                                    <a href="/prediction" class="nav-item nav-link">Prediction</a>
-                                    <a href="/url_checker" class="nav-item nav-link active">URL Checker</a>
-                                    <a href="/" class="nav-item nav-link">Logout</a>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+            {% include 'navbar.html' %}
         </div>
+        <!-- Navbar & Hero End -->
         <!-- Navbar & Hero End -->
 
         <!-- Modal Search Start -->
@@ -144,8 +86,8 @@
                             <h1 class="display-4 text-white mb-4">Advanced Click Fraud Detection Using Machine Learning</h1>
                             <p class="text-white-50 mb-4">Protect your online advertising campaigns with our advanced fraud detection system that uses machine learning to identify and prevent click fraud.</p>
                             <div class="d-flex flex-wrap gap-3">
-                                <a href="/url_checker" class="btn btn-primary px-4 py-2">Check URL Now</a>
-                                <a href="/model" class="btn btn-outline-light px-4 py-2">View Models</a>
+                                <a href="{{ url_for('url_checker') }}" class="btn btn-primary px-4 py-2">Check URL Now</a>
+                                <a href="{{ url_for('model') }}" class="btn btn-outline-light px-4 py-2">View Models</a>
                             </div>
                         </div>
                     </div>
@@ -198,7 +140,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="/url_checker" class="btn btn-primary mt-4 px-4">Try URL Checker</a>
+                        <a href="{{ url_for('url_checker') }}" class="btn btn-primary mt-4 px-4">Try URL Checker</a>
                     </div>
                 </div>
             </div>
@@ -212,10 +154,10 @@
             <div class="container">
                 <div class="row g-4 align-items-center">
                     <div class="col-md-6 text-center text-md-start mb-md-0">
-                        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
+                        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>AdShield</a>, All right reserved.</span>
                     </div>
                     <div class="col-md-6 text-center text-md-end text-body">
-                        Designed By <a class="border-bottom text-white" href="#">HTML Codex</a>
+                        Designed By <a class="border-bottom text-white" href="#">AdShield Team</a>
                     </div>
                 </div>
             </div>

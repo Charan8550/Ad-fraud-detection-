@@ -1,47 +1,28 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/">Ad Click Fraud Detection</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+            <i class="fas fa-shield-alt text-primary me-2"></i>
+            <span>AdShield</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/model">Models</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/prediction">Prediction</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/url_checker">URL Checker</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/upload">Upload</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+            <div class="navbar-nav align-items-center">
                 {% if 'user_email' in session %}
-                <li class="nav-item">
-                    <span class="nav-link">Welcome, {{ session['user_email'] }}</span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
+                    <a href="{{ url_for('home') }}" class="nav-item nav-link {% if request.path == url_for('home') %}active{% endif %}">Dashboard</a>
+                    <a href="{{ url_for('upload') }}" class="nav-item nav-link {% if request.path == url_for('upload') %}active{% endif %}">Upload</a>
+                    <a href="{{ url_for('model') }}" class="nav-item nav-link {% if request.path == url_for('model') %}active{% endif %}">Models</a>
+                    <a href="{{ url_for('prediction') }}" class="nav-item nav-link {% if request.path == url_for('prediction') %}active{% endif %}">Predict Click</a>
+                    <a href="{{ url_for('url_checker') }}" class="nav-item nav-link {% if request.path == url_for('url_checker') %}active{% endif %}">Check URL</a>
+                    <a href="{{ url_for('logout') }}" class="nav-item nav-link text-danger ms-lg-3">Logout</a>
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">Register</a>
-                </li>
+                    <a href="{{ url_for('index') }}" class="nav-item nav-link {% if request.path == url_for('index') %}active{% endif %}">Home</a>
+                    <a href="{{ url_for('about') }}" class="nav-item nav-link {% if request.path == url_for('about') %}active{% endif %}">About</a>
+                    <a href="{{ url_for('register') }}" class="nav-item nav-link {% if request.path == url_for('register') %}active{% endif %}">Register</a>
+                    <a href="{{ url_for('login') }}" class="nav-item nav-link {% if request.path == url_for('login') %}active{% endif %}">Login</a>
                 {% endif %}
-            </ul>
+            </div>
         </div>
     </div>
 </nav>

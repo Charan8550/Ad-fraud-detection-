@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Fraud Detection</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>URL Fraud Detection - AdShield</title>
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="static/css/style.css" rel="stylesheet">
     <style>
         .fraud-detection {
             max-width: 800px;
             margin: 50px auto;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
-        .result-box {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 5px;
-            display: none;
-        }
-        .fraud {
-            background-color: #ffebee;
-            border-left: 5px solid #f44336;
-        }
-        .genuine {
-            background-color: #e8f5e9;
-            border-left: 5px solid #4caf50;
+        .list-group-item {
+            background-color: rgba(30, 41, 59, 0.4) !important;
+            color: #e2e8f0 !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
         }
     </style>
 </head>
@@ -34,28 +36,28 @@
     
     <div class="container fraud-detection">
         <h2 class="text-center mb-4">URL Fraud Detection</h2>
-        <p class="text-muted text-center mb-4">Check if a URL is potentially fraudulent or genuine</p>
+        <p class="text-white-50 text-center mb-4">Check if a URL is potentially fraudulent or genuine</p>
         
         <form action="/check_url" method="post">
             <div class="input-group mb-3">
                 <input type="url" name="url" class="form-control form-control-lg" placeholder="Enter URL to check" required>
-                <button class="btn btn-primary" type="submit">Check URL</button>
+                <button class="btn btn-primary px-4" type="submit">Check URL</button>
             </div>
         </form>
 
         {% if result is defined %}
-        <div class="result-box {% if result.is_fraud %}fraud{% else %}genuine{% endif %}" id="resultBox">
+        <div class="alert {% if result.is_fraud %}alert-danger{% else %}alert-success{% endif %} mt-4" id="resultBox" style="display: none;">
             <h4>Analysis Result</h4>
-            <p><strong>URL:</strong> {{ result.url }}</p>
-            <p><strong>Status:</strong> 
+            <p class="mb-1"><strong>URL:</strong> {{ result.url }}</p>
+            <p class="mb-1"><strong>Status:</strong> 
                 {% if result.is_fraud %}
-                <span class="text-danger">⚠️ Potential Fraud Detected</span>
+                <span class="fw-bold">⚠️ Potential Fraud Detected</span>
                 {% else %}
-                <span class="text-success">✓ Genuine URL</span>
+                <span class="fw-bold">✓ Genuine URL</span>
                 {% endif %}
             </p>
             {% if result.reason %}
-            <p><strong>Reason:</strong> {{ result.reason }}</p>
+            <p class="mb-0"><strong>Reason:</strong> {{ result.reason }}</p>
             {% endif %}
         </div>
         {% endif %}
